@@ -1,4 +1,7 @@
 class WordList
+  def self.get_list
+    ['something','bar', 'sinks','skins','skunk','skin']
+  end
 end
 
 class Anagram
@@ -9,6 +12,7 @@ class Anagram
   def word_list
     @word_list ||= WordList.get_list
     find_words
+    exclude_original_word
     @word_list
   end
 
@@ -18,6 +22,10 @@ class Anagram
     @word.each_char do |char|
       @word_list.select! {|w| w =~ /(#{char}[a-zA-z]*){#{@word.count(char)}}/}
     end
+  end
+
+  def exclude_original_word
+    @word_list.delete_if { |w| w =~ /\b#{@word}\b/ }
   end
 end
 
@@ -34,10 +42,6 @@ describe Anagram do
   context "#word_list" do
 
     let (:anagram) { Anagram.new('skins') }
-
-    before :each do
-      WordList.stub(:get_list) {['something','bar', 'sinks','skins','skunk','skin']}
-    end
 
     it 'finds a list of words containing the letters from the original word' do
       anagram.word_list.should include('sinks')
