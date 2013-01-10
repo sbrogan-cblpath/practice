@@ -1,3 +1,12 @@
+class Anagram
+  def find_words(word)
+  end
+end
+
+
+
+
+
 #To find an anagram
 #We need to take each letter from a word
 #And compare it to a list of words
