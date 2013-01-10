@@ -1,16 +1,26 @@
+#Refactored a bit
+#Instead of using an attr_reader I defined my own and initialized and set the value in there
+#We are now setting the word on initialize when creating an instance of Anagram
+#put find_words in private since that method won't get called outside of the class
 class WordList
 end
 
 class Anagram
-  def initialize
-    @word_list = WordList.get_list
+  def initialize(word)
+    @word = word
   end
 
-  attr_reader :word_list
+  def word_list
+    @word_list ||= WordList.get_list
+    find_words
+    @word_list
+  end
 
-  def find_words(word)
-    word.each_char do |char|
-      @word_list.select! {|w| w =~ /(#{char}[a-zA-z]*){#{word.count(char)}}/}
+  private
+
+  def find_words
+    @word.each_char do |char|
+      @word_list.select! {|w| w =~ /(#{char}[a-zA-z]*){#{@word.count(char)}}/}
     end
   end
 end
@@ -25,13 +35,12 @@ end
 #Then find the words containing those letters
 describe Anagram do
 
-  context "#find_words" do
+  context "#word_list" do
 
-    let (:anagram) { Anagram.new }
+    let (:anagram) { Anagram.new('skins') }
 
     before :each do
       WordList.stub(:get_list) {['something','bar', 'sinks','skins','skunk','skin']}
-      anagram.find_words('skins')
     end
 
     it 'finds a list of words containing the letters from the original word' do
