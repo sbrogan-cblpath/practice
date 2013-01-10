@@ -1,7 +1,3 @@
-#Refactored a bit
-#Instead of using an attr_reader I defined my own and initialized and set the value in there
-#We are now setting the word on initialize when creating an instance of Anagram
-#put find_words in private since that method won't get called outside of the class
 class WordList
 end
 
@@ -44,7 +40,11 @@ describe Anagram do
     end
 
     it 'finds a list of words containing the letters from the original word' do
-      anagram.word_list.should include('sinks', 'skins')
+      anagram.word_list.should include('sinks')
+    end
+
+    it 'does not include itself in the search' do
+      anagram.word_list.should_not include('skins')
     end
   end
 end
