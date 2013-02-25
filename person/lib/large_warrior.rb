@@ -1,0 +1,2 @@
+class LargeWarrior < Person
+end
