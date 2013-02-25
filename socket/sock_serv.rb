@@ -8,7 +8,7 @@ while true
 
     begin
       while connection
-        incomingData = connection.gets("xdd")
+        incomingData = connection.gets(28.chr + 13.chr)
         if incomingData != nil
           incomingData = incomingData.chomp
         end
@@ -16,13 +16,12 @@ while true
         puts "Incoming: #{incomingData}"
         puts "Sweet Ending"
 
-        if incomingData == "SHUTDOWNxdd"
+        if incomingData == "SHUTDOWN#{28.chr + 13.chr}"
           puts "Received: DISCONNECT, closed connection"
           connection.close
           break
         else
-          connection.puts "#{incomingData.gsub('xdd','')}"
-          connection.puts "More Dataxdd"
+          connection.puts "MSH|^~\\&|CPL|CPL|CBL|CBL|TODAYSDATE||||GUID#{28.chr}"
           connection.flush
         end
       end
